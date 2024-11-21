@@ -19,3 +19,37 @@
     font-size: 24px;
     margin: 20px;
 }
+
+/* Add these new styles here */
+.player-options {
+    text-align: center;
+    margin: 20px;
+}
+
+.player-options button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+.leaderboard {
+    margin-top: 30px;
+    padding: 20px;
+    border-top: 2px solid #eee;
+}
+
+.leaderboard h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.score-entry {
+    padding: 10px;
+    margin: 5px 0;
+    background: #f5f5f5;
+    border-radius: 3px;
+}
