@@ -53,12 +53,28 @@ function startNewGame() {
     return true;
 }
 
+function createFireworks() {
+    for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            document.body.appendChild(firework);
+            
+            // Remove the firework element after animation
+            setTimeout(() => {
+                firework.remove();
+            }, 1000);
+        }, i * 200); // Stagger the fireworks
+    }
+}
+
 function endGame() {
     gameActive = false;
     clickButton.disabled = true;
     clickButton.textContent = "Game Over - Come back tomorrow!";
     localStorage.setItem('lastPlayed', new Date().toDateString());
     saveScore(score);
+    createFireworks();
 }
 
 // Handle guest play

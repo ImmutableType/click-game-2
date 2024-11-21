@@ -3,10 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Click Game</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Retro Click Game</title>
+    <style>
+        :root {
+          --neon-blue: #00fff5;
+          --neon-pink: #ff00ff;
+          --dark-bg: #111111;
+          --grid-bg: #000000;
+          --score-green: #00ff00;
+        }
+
+        body {
+          background: var(--dark-bg);
+          color: var(--neon-blue);
+          font-family: "Courier New", monospace;
+          text-transform: uppercase;
+          min-height: 100vh;
+          margin: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .game-container {
+          position: relative;
+          border: 4px solid var(--neon-blue);
+          box-shadow: 0 0 20px var(--neon-blue),
+                      inset 0 0 20px var(--neon-blue);
+          background: linear-gradient(rgba(0, 0, 0, 0.9),
+            rgba(0, 0, 0, 0.9)),
+            repeating-linear-gradient(
+              transparent 0px,
+              transparent 1px,
+              black 1px,
+              black 2px
+            );
+          padding: 3rem;
+          text-align: center;
+          width: 400px;
+          margin: auto;
+          border-radius: 20px;
+          overflow: hidden;
+        }
+
+        .game-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(
+                    circle at center,
+                    transparent 0%,
+                    rgba(0, 0, 0, 0.2) 90%,
+                    rgba(0, 0, 0, 0.4) 100%
+                );
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .game-container::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: none;
+            box-shadow: 
+                inset 0 0 10px rgba(255, 0, 0, 0.1),
+                inset 0 0 20px rgba(0, 255, 0, 0.1),
+                inset 0 0 30px rgba(0, 0, 255, 0.1);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .game-container > * {
+            position: relative;
+            z-index: 3;
+        }
+
+        .crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%,
+                rgba(0, 0, 0, 0.25) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 999;
+            animation: flicker 0.15s infinite;
+            opacity: 0.15;
+        }
+
+        h1 {
+          font-size: 3rem;
+          text-align: center;
+          color: var(--neon-pink);
+          text-shadow: 0 0 10px var(--neon-pink);
+          animation: blink 2s infinite;
+          margin-bottom: 2rem;
+        }
+
+        h2 {
+          color: var(--neon-pink);
+          font-size: 1.5rem;
+          margin: 1rem 0;
+        }
+
+        .player-options {
+          margin: 1.5rem 0;
+        }
+
+        .player-options button {
+          background: transparent;
+          border: 2px solid var(--neon-blue);
+          color: var(--neon-blue);
+          font-family: "Courier New", monospace;
+          text-transform: uppercase;
+          font-size: 1rem;
+          padding: 0.5rem 1rem;
+          margin: 0 0.5rem;
+          cursor: pointer;
+          text-shadow: 0 0 5px var(--neon-blue);
+          transition: all 0.2s;
+        }
+
+        .player-options button:hover {
+          background: var(--neon-blue);
+          color: var(--dark-bg);
+        }
+
+        .player-options button:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        #score {
+          font-family: "Courier New", monospace;
+          color: var(--score-green);
+          font-size: 1.5rem;
+          letter-spacing: 2px;
+          margin: 2rem 0;
+          text-shadow: 0 0 5px var(--score-green);
+        }
+
+        #clickButton {
+          background: transparent;
+          border: 3px solid var(--neon-blue);
+          color: var(--neon-blue);
+          font-family: "Courier New", monospace;
+          text-transform: uppercase;
+          font-size: 1.5rem;
+          padding: 1rem 2rem;
+          cursor: pointer;
+          text-shadow: 0 0 5px var(--neon-blue);
+          box-shadow: 0 0 10px var(--neon-blue);
+          transition: all 0.2s;
+          margin: 2rem auto;
+          display: block;
+        }
+
+        #clickButton:hover:not(:disabled) {
+          background: var(--neon-blue);
+          color: var(--dark-bg);
+          transform: translateY(-2px);
+        }
+
+        #clickButton:active:not(:disabled) {
+          transform: translateY(1px);
+        }
+
+        #clickButton:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          box-shadow: none;
+        }
+
+        .leaderboard {
+          border: 2px solid var(--neon-blue);
+          padding: 1rem;
+          margin-top: 2rem;
+          box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .score-entry {
+          color: var(--score-green);
+          font-family: "Courier New", monospace;
+          text-align: left;
+          padding: 0.5rem;
+          text-shadow: 0 0 5px var(--score-green);
+        }
+
+        @keyframes blink {
+          0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+            text-shadow: 0 0 10px var(--neon-pink);
+          }
+          20%, 22%, 24%, 55% {
+            text-shadow: none;
+          }
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.27861; }
+            5% { opacity: 0.34769; }
+            10% { opacity: 0.23604; }
+            15% { opacity: 0.90626; }
+            20% { opacity: 0.18128; }
+            25% { opacity: 0.83891; }
+            30% { opacity: 0.65583; }
+            35% { opacity: 0.67807; }
+            40% { opacity: 0.26559; }
+            45% { opacity: 0.84693; }
+            50% { opacity: 0.96019; }
+            55% { opacity: 0.08594; }
+            60% { opacity: 0.20313; }
+            65% { opacity: 0.71988; }
+            70% { opacity: 0.53455; }
+            75% { opacity: 0.37288; }
+            80% { opacity: 0.71428; }
+            85% { opacity: 0.70419; }
+            90% { opacity: 0.7003; }
+            95% { opacity: 0.36108; }
+            100% { opacity: 0.24387; }
+        }
+
+        .firework {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: explode 1s ease-out forwards;
+            z-index: 1000;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+                box-shadow: 
+                    0 0 0 0 var(--neon-pink),
+                    0 0 0 0 var(--neon-blue),
+                    0 0 0 0 var(--score-green);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(20);
+                opacity: 0;
+                box-shadow: 
+                    -120px -120px 0 0 var(--neon-pink),
+                    120px -120px 0 0 var(--neon-blue),
+                    0 120px 0 0 var(--score-green),
+                    -60px -60px 0 0 var(--neon-blue),
+                    60px -60px 0 0 var(--score-green),
+                    0 60px 0 0 var(--neon-pink),
+                    -120px 0 0 0 var(--score-green),
+                    120px 0 0 0 var(--neon-pink);
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="crt-overlay"></div>
     <div class="game-container">
         <h1>Click Game</h1>
         <div class="player-options">

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+    :root {
+        --primary: #4361ee;
+        --secondary: #4cc9f0;
+        --success: #72b01d;
+        --background: #f8f9fa;
+        --text: #2b2d42;
+        --text-light: #8d99ae;
+    }
+
+    body {
+        background: var(--background);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .game-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    #clickButton {
+        padding: 1.25rem 2.5rem;
+        font-size: 1.25rem;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        transition: transform 0.2s;
+    }
+
+    #clickButton:hover {
+        transform: translateY(-2px);
+    }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Click Game</h1>
+        <div id="score">Score: 0</div>
+        <button id="clickButton">Click Me!</button>
+    </div>
+</body>
+</html>
