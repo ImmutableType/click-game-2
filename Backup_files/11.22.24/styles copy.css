@@ -1,0 +1,38 @@
+/* Retro Arcade Theme with Centered Layout */
+:root {
+    --neon-blue: #00fff5;
+    --neon-pink: #ff00ff;
+    --dark-bg: #111111;
+    --grid-bg: #000000;
+    --score-green: #00ff00;
+  }
+  
+  body {
+    background: var(--dark-bg);
+    color: var(--neon-blue);
+    font-family: "Courier New", monospace;
+    text-transform: uppercase;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .game-container {
+    border: 4px solid var(--neon-blue);
+    box-shadow: 0 0 20px var(--neon-blue),
+                inset 0 0 20px var(--neon-blue);
+    background: linear-gradient(rgba(0, 0, 0, 0.9),
+      rgba(0, 0, 0, 0.9)),
+      repeating-linear-gradient(
+        transparent 0px,
+        transparent 1px,
+        black 1px,
+        black 2px
+      );
+    padding: 3rem;
+    text-align: center;
+    width: 400px;
+    margin: auto;
+  }
