@@ -224,7 +224,7 @@ function saveScore(finalScore) {
 
 async function saveTransaction(transaction) {
    try {
-       await fetch('http://localhost:3000/api/transactions', {
+       await fetch('/api/transactions', {
            method: 'POST',
            headers: {
                'Content-Type': 'application/json',
@@ -239,7 +239,7 @@ async function saveTransaction(transaction) {
 
 async function register(username, password) {
    try {
-       const response = await fetch('http://localhost:3000/auth/register', {
+       const response = await fetch('/api/auth/register', {
            method: 'POST',
            headers: {
                'Content-Type': 'application/json'
@@ -261,7 +261,7 @@ async function register(username, password) {
 
 async function login(username, password) {
    try {
-       const response = await fetch('http://localhost:3000/auth/login', {
+       const response = await fetch('/api/auth/login', {
            method: 'POST',
            headers: {
                'Content-Type': 'application/json'
@@ -294,35 +294,25 @@ function displayPersonalScores() {
    }
 }
 
-
-
-
 // Main game click handler with simplified treasury
 clickButton.addEventListener('click', () => {
-    if (!gameActive) return;
-    
-    const pointsEarned = getRandomPoints();
-    
-    // Player gets full points
-    score += pointsEarned;
-    
-    // Simple treasury addition
-    treasuryBalance += Math.floor(pointsEarned * 0.10);
-    
-    // Direct display updates
-    scoreDisplay.textContent = `Game Score: ${score}`;
-    treasuryDisplay.textContent = `Treasury Points TV: ${treasuryBalance}`;
-    
-    clickCount++;
-    if (clickCount >= 10) endGame();
+   if (!gameActive) return;
+   
+   const pointsEarned = getRandomPoints();
+   
+   // Player gets full points
+   score += pointsEarned;
+   
+   // Simple treasury addition
+   treasuryBalance += Math.floor(pointsEarned * 0.10);
+   
+   // Direct display updates
+   scoreDisplay.textContent = `Game Score: ${score}`;
+   treasuryDisplay.textContent = `Treasury Points TV: ${treasuryBalance}`;
+   
+   clickCount++;
+   if (clickCount >= 10) endGame();
 });
-
-
-
-
-
-
-
 
 // Add tip button handler
 tipBtn.addEventListener('click', handleTip);
